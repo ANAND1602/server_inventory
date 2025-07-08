@@ -1,0 +1,12 @@
+---
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
+    
+- name: restart server-inventory
+  systemd:
+    name: server-inventory
+    state: restarted
+    
+- name: restore selinux contexts
+  command: restorecon -Rv {{ app_dir }}/

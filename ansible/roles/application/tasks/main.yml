@@ -1,0 +1,64 @@
+---
+- name: Copy application files
+  copy:
+    src: ../../../../
+    dest: "{{ app_dir }}/"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: preserve
+    
+- name: Create Python virtual environment
+  command: "python3 -m venv {{ app_dir }}/venv"
+  become_user: "{{ app_user }}"
+  args:
+    creates: "{{ app_dir }}/venv"
+    
+- name: Install Python dependencies
+  pip:
+    requirements: "{{ app_dir }}/requirements.txt"
+    virtualenv: "{{ app_dir }}/venv"
+  become_user: "{{ app_user }}"
+  
+- name: Set SELinux context for Python
+  sefcontext:
+    target: "{{ app_dir }}/venv/bin/python3"
+    setype: httpd_exec_t
+    state: present
+  notify: restore selinux contexts
+  
+- name: Install systemd service
+  template:
+    src: server-inventory.service.j2
+    dest: /etc/systemd/system/server-inventory.service
+    mode: '0644'
+  notify:
+    - reload systemd
+    - restart server-inventory
+    
+- name: Create backup script
+  template:
+    src: backup.sh.j2
+    dest: "{{ app_dir }}/backup.sh"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0755'
+    
+- name: Setup backup cron
+  cron:
+    name: "Server Inventory Backup"
+    minute: "0"
+    hour: "2"
+    user: "{{ app_user }}"
+    job: "{{ app_dir }}/backup.sh"
+    
+- name: Configure log rotation
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/server-inventory
+    mode: '0644'
+    
+- name: Start application service
+  systemd:
+    name: server-inventory
+    state: started
+    enabled: yes

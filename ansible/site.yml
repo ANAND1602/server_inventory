@@ -1,0 +1,31 @@
+---
+- name: Deploy Server Inventory Management System
+  hosts: rhel_servers
+  become: yes
+  roles:
+    - common
+    - application
+    - webserver
+    
+- name: Verify deployment
+  hosts: rhel_servers
+  become: yes
+  tasks:
+    - name: Wait for application
+      wait_for:
+        port: 5000
+        host: 127.0.0.1
+        delay: 10
+        timeout: 60
+        
+    - name: Test application health
+      uri:
+        url: "http://127.0.0.1:5000"
+        status_code: 200
+        
+    - name: Display success message
+      debug:
+        msg: |
+          ✅ Deployment successful!
+          URL: http://{{ ansible_default_ipv4.address }}
+          Login: admin/admin123

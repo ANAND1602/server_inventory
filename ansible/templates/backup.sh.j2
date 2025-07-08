@@ -1,0 +1,34 @@
+#!/bin/bash
+# Server Inventory Backup Script
+
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="{{ backup_dir }}"
+DB_PATH="{{ app_dir }}/backend/server_inventory.db"
+LOG_FILE="{{ log_dir }}/backup.log"
+
+# Create backup directory if not exists
+mkdir -p "$BACKUP_DIR"
+
+# Log backup start
+echo "$(date): Starting backup..." >> "$LOG_FILE"
+
+# Backup database
+if [ -f "$DB_PATH" ]; then
+    cp "$DB_PATH" "$BACKUP_DIR/inventory_$DATE.db"
+    echo "$(date): Database backed up to inventory_$DATE.db" >> "$LOG_FILE"
+else
+    echo "$(date): ERROR - Database file not found: $DB_PATH" >> "$LOG_FILE"
+    exit 1
+fi
+
+# Compress old backups (older than 7 days)
+find "$BACKUP_DIR" -name "*.db" -mtime +7 -exec gzip {} \;
+
+# Remove old compressed backups (older than 30 days)
+find "$BACKUP_DIR" -name "*.gz" -mtime +30 -delete
+
+# Log backup completion
+echo "$(date): Backup completed successfully" >> "$LOG_FILE"
+
+# Keep only last 100 log entries
+tail -n 100 "$LOG_FILE" > "$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE"

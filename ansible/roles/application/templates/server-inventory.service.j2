@@ -1,0 +1,23 @@
+[Unit]
+Description=Server Inventory Management System
+After=network.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+Group={{ app_user }}
+WorkingDirectory={{ app_dir }}/backend
+Environment=PATH={{ app_dir }}/venv/bin
+Environment=FLASK_ENV=production
+ExecStart={{ app_dir }}/venv/bin/python app.py
+Restart=always
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths={{ app_dir }}
+ReadWritePaths={{ log_dir }}
+
+[Install]
+WantedBy=multi-user.target

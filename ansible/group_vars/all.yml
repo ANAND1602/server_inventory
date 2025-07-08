@@ -1,0 +1,32 @@
+---
+# Global variables for all hosts
+
+# Application settings
+app_name: server-inventory
+app_user: inventory
+app_dir: /opt/server_inventory
+backup_dir: /opt/backups/server_inventory
+log_dir: /var/log/server_inventory
+
+# Python settings
+python_version: python3
+pip_version: latest
+
+# Security settings
+firewall_ports:
+  - 5000/tcp
+  - 80/tcp
+  - 443/tcp
+
+selinux_booleans:
+  - httpd_can_network_connect
+
+# Backup settings
+backup_retention_days: 30
+backup_schedule:
+  minute: 0
+  hour: 2
+
+# Log rotation settings
+log_retention_days: 30
+log_rotation: daily
