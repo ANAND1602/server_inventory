@@ -9,6 +9,7 @@
     owner: "{{ app_user }}"
     group: "{{ app_user }}"
     mode: preserve
+    remote_src: true
     
 - name: Create Python virtual environment
   become_user: root
