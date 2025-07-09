@@ -1,6 +1,9 @@
 ---
 - name: Deploy Server Inventory Management System
   hosts: all
+  become_user: root
+  remote_user: ansible
+  become: true
   become: yes
   roles:
     - common
@@ -9,6 +12,9 @@
     
 - name: Verify deployment
   hosts: all
+  become_user: root
+  remote_user: ansible
+  become: true
   become: yes
   tasks:
     - name: Wait for application
@@ -19,11 +25,17 @@
         timeout: 60
         
     - name: Test application health
+      become_user: root
+      remote_user: ansible
+      become: true
       uri:
         url: "http://127.0.0.1:5000"
         status_code: 200
         
     - name: Display success message
+      become_user: root
+      remote_user: ansible
+      become: true
       debug:
         msg: |
           ✅ Deployment successful!

@@ -1,10 +1,16 @@
 ---
 - name: Update system packages
+  become_user: root
+  remote_user: ansible
+  become: true
   dnf:
     name: "*"
     state: latest
     
 - name: Install base packages
+  become_user: root
+  remote_user: ansible
+  become: true
   dnf:
     name:
       - python3
@@ -16,6 +22,9 @@
     state: present
     
 - name: Create application user
+  become_user: root
+  remote_user: ansible
+  become: true
   user:
     name: "{{ app_user }}"
     system: yes
@@ -24,6 +33,9 @@
     create_home: no
     
 - name: Create directories
+  become_user: root
+  remote_user: ansible
+  become: true
   file:
     path: "{{ item }}"
     state: directory
@@ -36,6 +48,9 @@
     - "{{ log_dir }}"
     
 - name: Configure firewall
+  become_user: root
+  remote_user: ansible
+  become: true
   firewalld:
     port: "{{ item }}"
     permanent: yes
@@ -48,12 +63,18 @@
   notify: restart firewalld
   
 - name: Configure SELinux
+  become_user: root
+  remote_user: ansible
+  become: true
   seboolean:
     name: httpd_can_network_connect
     state: yes
     persistent: yes
     
 - name: Add SELinux port
+  become_user: root
+  remote_user: ansible
+  become: true
   seport:
     ports: 5000
     proto: tcp
