@@ -1,6 +1,6 @@
 ---
 - name: Deploy Server Inventory Management System
-  hosts: rhel_servers
+  hosts: all
   become: yes
   roles:
     - common
@@ -8,7 +8,7 @@
     - webserver
     
 - name: Verify deployment
-  hosts: rhel_servers
+  hosts: all
   become: yes
   tasks:
     - name: Wait for application
