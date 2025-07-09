@@ -3,7 +3,7 @@
   become_user: root
   remote_user: ansible
   become: true
-  copy:
+  ansible.builtin.copy:
     src: /opt/server_inventory/project
     dest: "{{ app_dir }}/"
     owner: "{{ app_user }}"
