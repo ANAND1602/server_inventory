@@ -4,7 +4,7 @@
   remote_user: ansible
   become: true
   copy:
-    src: ../../../../
+    src: /opt/server_inventory/project
     dest: "{{ app_dir }}/"
     owner: "{{ app_user }}"
     group: "{{ app_user }}"
