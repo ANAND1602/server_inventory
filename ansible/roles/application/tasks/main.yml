@@ -12,8 +12,6 @@
     remote_src: true
     
 - name: Create Python virtual environment
-  become_user: root
-  remote_user: ansible
   become: true
   command: "python3 -m venv {{ app_dir }}/venv"
   become_user: "{{ app_user }}"
@@ -21,8 +19,6 @@
     creates: "{{ app_dir }}/venv"
     
 - name: Install Python dependencies
-  become_user: root
-  remote_user: ansible
   become: true
   pip:
     requirements: "{{ app_dir }}/requirements.txt"
