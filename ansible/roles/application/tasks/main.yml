@@ -30,8 +30,6 @@
   become_user: "{{ app_user }}"
   
 - name: Set SELinux context for Python
-  become_user: root
-  remote_user: ansible
   become: true
   sefcontext:
     target: "{{ app_dir }}/venv/bin/python3"
