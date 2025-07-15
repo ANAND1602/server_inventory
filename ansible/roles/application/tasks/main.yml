@@ -13,7 +13,7 @@
     
 - name: Create Python virtual environment
   become: true
-  command: "python3 -m venv {{ app_dir }}/venv"
+  command: "python3.9 -m venv {{ app_dir }}/venv"
   become_user: "{{ app_user }}"
   args:
     creates: "{{ app_dir }}/venv"
