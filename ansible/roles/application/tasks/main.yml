@@ -34,8 +34,8 @@
 #  notify: restore selinux contexts
   
 - name: Install systemd service
-  become_user: root
-  remote_user: ansible
+#  become_user: root
+#  remote_user: ansible
   become: true
   template:
     src: server-inventory.service.j2
@@ -46,8 +46,8 @@
     - restart server-inventory
     
 - name: Create backup script
-  become_user: root
-  remote_user: ansible
+#  become_user: root
+#  remote_user: ansible
   become: true
   template:
     src: backup.sh.j2
@@ -57,8 +57,8 @@
     mode: '0755'
     
 - name: Setup backup cron
-  become_user: root
-  remote_user: ansible
+ # become_user: root
+ # remote_user: ansible
   become: true
   cron:
     name: "Server Inventory Backup"
@@ -68,8 +68,8 @@
     job: "{{ app_dir }}/backup.sh"
     
 - name: Configure log rotation
-  become_user: root
-  remote_user: ansible
+  #become_user: root
+  #remote_user: ansible
   become: true
   template:
     src: logrotate.j2
@@ -77,8 +77,8 @@
     mode: '0644'
     
 - name: Start application service
-  become_user: root
-  remote_user: ansible
+  #become_user: root
+  #remote_user: ansible
   become: true
   systemd:
     name: server-inventory
