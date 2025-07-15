@@ -75,6 +75,7 @@
   become_user: root
   remote_user: ansible
   become: true
+  community.general.seport:
   seport:
     ports: 5000
     proto: tcp
