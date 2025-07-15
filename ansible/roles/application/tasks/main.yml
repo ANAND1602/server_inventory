@@ -29,13 +29,13 @@
     virtualenv: "{{ app_dir }}/venv"
   become_user: "{{ app_user }}"
   
-- name: Set SELinux context for Python
-  become: true
-  sefcontext:
-    target: "{{ app_dir }}/venv/bin/python3"
-    setype: httpd_exec_t
-    state: present
-  notify: restore selinux contexts
+#- name: Set SELinux context for Python
+#  become: true
+#  sefcontext:
+#    target: "{{ app_dir }}/venv/bin/python3"
+#    setype: httpd_exec_t
+#    state: present
+#  notify: restore selinux contexts
   
 - name: Install systemd service
   become_user: root
