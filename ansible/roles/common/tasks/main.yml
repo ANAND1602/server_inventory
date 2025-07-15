@@ -72,8 +72,8 @@
     persistent: yes
     
 - name: Add SELinux port
-  become_user: root
-  remote_user: ansible
+  #become_user: root
+  #remote_user: ansible
   become: true
   community.general.seport:
   seport:
