@@ -71,13 +71,13 @@
     state: yes
     persistent: yes
     
-- name: Add SELinux port
+#- name: Add SELinux port
   #become_user: root
   #remote_user: ansible
-  become: true
-  community.general.seport:
-  seport:
-    ports: 5000
-    proto: tcp
-    setype: http_port_t
-    state: present
+#  become: true
+#  community.general.seport:
+#  seport:
+#    ports: 5000
+#    proto: tcp
+#    setype: http_port_t
+#    state: present
